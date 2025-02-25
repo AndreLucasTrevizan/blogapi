@@ -4,6 +4,7 @@ import {
   Router
 } from 'express';
 import { UserRouter } from './modules/users/router';
+import { PostRouter } from './modules/posts/router';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.get("/errors", (
 });
 
 router.use(UserRouter);
+router.use(PostRouter);
 
 export default router;
