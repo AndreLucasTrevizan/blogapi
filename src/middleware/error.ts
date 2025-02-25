@@ -9,6 +9,7 @@ export const errorMiddleware = (
 
   if (err instanceof Error) {
     res.status(400).json({ msg: err.message });
+    return;
   }
 
   res.status(500).json({
