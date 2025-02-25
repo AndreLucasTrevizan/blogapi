@@ -3,6 +3,7 @@ import {
   Response,
   Router
 } from 'express';
+import { UserRouter } from './modules/users/router';
 
 const router = Router();
 
@@ -12,5 +13,7 @@ router.get("/errors", (
 ) => {
   throw new Error("Error test");
 });
+
+router.use(UserRouter);
 
 export default router;
