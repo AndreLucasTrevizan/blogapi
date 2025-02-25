@@ -17,10 +17,12 @@
     "@types/jsonwebtoken": "^9.0.9",
     "dotenv": "^16.4.7",
     "nodemon": "^3.1.9",
+    "prisma": "^6.4.1",
     "sucrase": "^3.35.0",
     "typescript": "^5.7.3"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
