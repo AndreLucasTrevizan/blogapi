@@ -15,6 +15,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.9",
+    "dotenv": "^16.4.7",
     "nodemon": "^3.1.9",
     "sucrase": "^3.35.0",
     "typescript": "^5.7.3"
