@@ -50,3 +50,30 @@ export const createComment = async (
 
   res.json().end();
 }
+
+export const listComments = async (
+  req: Request,
+  res: Response
+) => {
+
+  const postId = req.params.postId as string;
+
+  if (!postId) {
+    throw new Error("Precisamos que informe o ID do Post");
+  }
+
+  const post = await prisma.post.findFirst({
+    where: { id: Number(postId) }
+  });
+
+  if (!post) {
+    throw new Error("Post invalido");
+  }
+
+  const comments = await prisma.comment.findMany({
+    where: { postId: post.id, },
+    select: selectOptions,
+  });
+
+  res.json({ comments });
+}
