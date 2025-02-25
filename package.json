@@ -5,7 +5,14 @@
   "repository": "https://github.com/AndreLucasTrevizan/blogapi.git",
   "author": "André Lucas Trevizan <trevizan.al@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "start": "node build/index.js",
+    "build": "tsc"
+  },
   "devDependencies": {
+    "nodemon": "^3.1.9",
+    "sucrase": "^3.35.0",
     "typescript": "^5.7.3"
   }
 }
