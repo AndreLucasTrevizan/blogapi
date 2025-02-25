@@ -3,8 +3,6 @@ import {
   Response
 } from 'express';
 import { prisma } from '../../prisma';
-import { compare, hash } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
 
 const selectOptions = {
   id: true,
@@ -23,11 +21,11 @@ export const createPost = async (
   const body = req.body.body as string;
 
   if (!title || title == "") {
-    throw new Error("Preencha o campo nome");
+    throw new Error("Preencha o campo título");
   }
   
   if (!body || body == "") {
-    throw new Error("Preencha o campo nome");
+    throw new Error("Preencha o campo descrição");
   }
   
   await prisma.post.create({

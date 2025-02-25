@@ -5,6 +5,7 @@ import {
 } from 'express';
 import { UserRouter } from './modules/users/router';
 import { PostRouter } from './modules/posts/router';
+import { CommentsRouter } from './modules/comments/router';
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.get("/errors", (
 
 router.use(UserRouter);
 router.use(PostRouter);
+router.use(CommentsRouter);
 
 export default router;
