@@ -6,6 +6,14 @@ import { prisma } from '../../prisma';
 import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
+const selectOptions = {
+  id: true,
+  name: true,
+  email: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
 const getUserByEmail = async (pUserEmail: string) => {
   const user = await prisma.user.findFirst({
     where: { email: pUserEmail }
@@ -95,4 +103,17 @@ export const userSignIn = async (
   }, String(process.env.API_SECRET));
 
   res.json({ token });
+}
+
+export const getUserDetails = async (
+  req: Request,
+  res: Response
+) => {
+
+  const user = await prisma.user.findFirst({
+    where: { id: req.user.id },
+    select: selectOptions,
+  });
+
+  res.json({ user });
 }
