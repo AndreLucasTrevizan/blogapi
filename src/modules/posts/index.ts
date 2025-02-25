@@ -40,3 +40,26 @@ export const createPost = async (
 
   res.json().end();
 }
+
+export const listPosts = async (
+  req: Request,
+  res: Response
+) => {
+
+  const posts = await prisma.post.findMany({
+    select: {
+      ...selectOptions,
+      user: {
+        select: {
+          id: true,
+          name: true,
+        }
+      }
+    },
+    orderBy: {
+      id: 'desc'
+    }
+  });
+
+  res.json({ posts }).end();
+}
