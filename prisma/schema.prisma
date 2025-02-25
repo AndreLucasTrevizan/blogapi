@@ -20,6 +20,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   post Post[]
+  comment Comment[]
   @@map("user")
 }
 
@@ -29,8 +30,22 @@ model Post {
   body String
   userId Int
   user User @relation(fields: [userId], references: [id])
+  comment Comment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("post")
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  body String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  postId Int
+  post Post @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("comment")
 }
