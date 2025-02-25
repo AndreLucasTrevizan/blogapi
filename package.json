@@ -1,0 +1,8 @@
+{
+  "name": "blogapi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/AndreLucasTrevizan/blogapi.git",
+  "author": "André Lucas Trevizan <trevizan.al@gmail.com>",
+  "license": "MIT"
+}
