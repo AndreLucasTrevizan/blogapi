@@ -4,6 +4,18 @@ import {
 } from 'express';
 import { prisma } from '../../prisma';
 
+export interface IPosts {
+  id: number;
+  title: string;
+  body: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+      id: number;
+      name: string;
+  };
+}
+
 const selectOptions = {
   id: true,
   title: true,
@@ -43,53 +55,73 @@ export const listPosts = async (
   req: Request,
   res: Response
 ) => {
+  const postId = req.query.postId as string;
+  const me = req.query.me as string;
 
-  const posts = await prisma.post.findMany({
-    select: {
-      ...selectOptions,
-      user: {
-        select: {
-          id: true,
-          name: true,
+  let posts: IPosts[] = [];
+
+  if (postId && postId != "") {
+    const post = await prisma.post.findFirst({
+      where: { id: Number(postId) },
+      select: {
+        ...selectOptions,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          }
         }
-      }
-    },
-    orderBy: {
-      id: 'desc'
+      },
+    });
+  
+    if (!post) {
+      throw new Error("Post não encontrado");
     }
-  });
+
+    res.json({ post }).end();
+    return;
+  }
+
+  if (me) {
+    posts = await prisma.post.findMany({
+      where: { userId: req.user.id, },
+      select: {
+        ...selectOptions,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    });
+
+    res.json({ posts }).end();
+    return;
+  }
+
+  if (
+    !postId &&
+    !me
+  ) {
+    posts = await prisma.post.findMany({
+      select: {
+        ...selectOptions,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    });
+  }
 
   res.json({ posts }).end();
-}
-
-export const getPostById = async (
-  req: Request,
-  res: Response
-) => {
-
-  const postId = req.params.postId as string;
-
-  if (!postId) {
-    throw new Error("Parametro de rota postId não encontrado");
-  }
-
-  const post = await prisma.post.findFirst({
-    where: { id: Number(postId) },
-    select: {
-      ...selectOptions,
-      user: {
-        select: {
-          id: true,
-          name: true,
-        }
-      }
-    },
-  });
-
-  if (!post) {
-    throw new Error("Post não encontrado");
-  }
-
-  res.json({ post });
-
 }
