@@ -83,7 +83,7 @@ export const userSignIn = async (
   }
   
   if (!password || password == "") {
-    throw new Error("Preencha o campo nome");
+    throw new Error("Preencha o campo senha");
   }
 
   const userByEmail = await getUserByEmail(email);
