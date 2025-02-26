@@ -74,7 +74,16 @@ export const getPostById = async (
   }
 
   const post = await prisma.post.findFirst({
-    where: { id: Number(postId) }
+    where: { id: Number(postId) },
+    select: {
+      ...selectOptions,
+      user: {
+        select: {
+          id: true,
+          name: true,
+        }
+      }
+    },
   });
 
   if (!post) {
