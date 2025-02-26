@@ -61,3 +61,26 @@ export const listPosts = async (
 
   res.json({ posts }).end();
 }
+
+export const getPostById = async (
+  req: Request,
+  res: Response
+) => {
+
+  const postId = req.params.postId as string;
+
+  if (!postId) {
+    throw new Error("Parametro de rota postId não encontrado");
+  }
+
+  const post = await prisma.post.findFirst({
+    where: { id: Number(postId) }
+  });
+
+  if (!post) {
+    throw new Error("Post não encontrado");
+  }
+
+  res.json({ post });
+
+}
