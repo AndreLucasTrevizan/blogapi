@@ -75,7 +75,7 @@ export const userSignIn = async (
   const password = req.body.password as string;
 
   if (!email || email == "") {
-    throw new Error("Preencha o campo nome");
+    throw new Error("Preencha o campo e-mail");
   }
 
   if (!email.includes('@')) {
