@@ -73,6 +73,9 @@ export const listComments = async (
   const comments = await prisma.comment.findMany({
     where: { postId: post.id, },
     select: selectOptions,
+    orderBy: {
+      createdAt: 'desc'
+    }
   });
 
   res.json({ comments });
