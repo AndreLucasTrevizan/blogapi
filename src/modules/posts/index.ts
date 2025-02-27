@@ -95,7 +95,7 @@ export const listPosts = async (
         }
       },
       orderBy: {
-        id: 'desc'
+        createdAt: 'desc'
       }
     });
 
@@ -118,7 +118,7 @@ export const listPosts = async (
         }
       },
       orderBy: {
-        id: 'desc'
+        createdAt: 'desc'
       }
     });
   }
