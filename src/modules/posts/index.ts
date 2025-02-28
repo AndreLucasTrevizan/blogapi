@@ -55,10 +55,18 @@ export const listPosts = async (
   req: Request,
   res: Response
 ) => {
+  const page = req.query.page as string ?? '1';
+  const limit = req.query.limit as string;
   const postId = req.query.postId as string;
   const me = req.query.me as string;
 
   let posts: IPosts[] = [];
+
+  const postsCount = await prisma.post.count();
+
+  const postsPerPage = Number(limit);
+
+  const amountOfPage = Math.ceil(postsCount / postsPerPage);
 
   if (postId && postId != "") {
     const post = await prisma.post.findFirst({
@@ -96,7 +104,7 @@ export const listPosts = async (
       },
       orderBy: {
         createdAt: 'desc'
-      }
+      },
     });
 
     res.json({ posts }).end();
@@ -108,6 +116,8 @@ export const listPosts = async (
     !me
   ) {
     posts = await prisma.post.findMany({
+      skip: (Number(page) - 1) * postsPerPage,
+      take: postsPerPage,
       select: {
         ...selectOptions,
         user: {
@@ -123,5 +133,5 @@ export const listPosts = async (
     });
   }
 
-  res.json({ posts }).end();
+  res.json({ posts, pages: amountOfPage, limit: postsPerPage }).end();
 }
