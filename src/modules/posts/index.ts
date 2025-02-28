@@ -56,7 +56,7 @@ export const listPosts = async (
   res: Response
 ) => {
   const page = req.query.page as string ?? '1';
-  const limit = req.query.limit as string;
+  const limit = req.query.limit as string ?? '5';
   const postId = req.query.postId as string;
   const me = req.query.me as string;
 
