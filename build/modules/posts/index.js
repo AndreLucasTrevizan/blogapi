@@ -38,9 +38,15 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.createPost = createPost;
 const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const page = (_a = req.query.page) !== null && _a !== void 0 ? _a : '1';
+    const limit = (_b = req.query.limit) !== null && _b !== void 0 ? _b : '5';
     const postId = req.query.postId;
     const me = req.query.me;
     let posts = [];
+    const postsCount = yield prisma_1.prisma.post.count();
+    const postsPerPage = Number(limit);
+    const amountOfPage = Math.ceil(postsCount / postsPerPage);
     if (postId && postId != "") {
         const post = yield prisma_1.prisma.post.findFirst({
             where: { id: Number(postId) },
@@ -59,6 +65,8 @@ const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     if (me) {
         posts = yield prisma_1.prisma.post.findMany({
+            skip: (Number(page) - 1) * postsPerPage,
+            take: postsPerPage,
             where: { userId: req.user.id, },
             select: Object.assign(Object.assign({}, selectOptions), { user: {
                     select: {
@@ -68,7 +76,7 @@ const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 } }),
             orderBy: {
                 createdAt: 'desc'
-            }
+            },
         });
         res.json({ posts }).end();
         return;
@@ -76,6 +84,8 @@ const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!postId &&
         !me) {
         posts = yield prisma_1.prisma.post.findMany({
+            skip: (Number(page) - 1) * postsPerPage,
+            take: postsPerPage,
             select: Object.assign(Object.assign({}, selectOptions), { user: {
                     select: {
                         id: true,
@@ -87,6 +97,6 @@ const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         });
     }
-    res.json({ posts }).end();
+    res.json({ posts, pages: amountOfPage, limit: postsPerPage }).end();
 });
 exports.listPosts = listPosts;
