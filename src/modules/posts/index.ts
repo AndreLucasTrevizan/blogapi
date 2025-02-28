@@ -92,6 +92,8 @@ export const listPosts = async (
 
   if (me) {
     posts = await prisma.post.findMany({
+      skip: (Number(page) - 1) * postsPerPage,
+      take: postsPerPage,
       where: { userId: req.user.id, },
       select: {
         ...selectOptions,
