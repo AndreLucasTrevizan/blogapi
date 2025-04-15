@@ -137,3 +137,43 @@ export const listPosts = async (
 
   res.json({ posts, pages: amountOfPage, limit: postsPerPage }).end();
 }
+
+export const editPost = async (
+  req: Request,
+  res: Response
+) => {
+
+  const {
+    postId,
+    title,
+    body
+  } = req.body;
+
+  if (postId == "") {
+    throw new Error("Preencha o campo postId");
+  }
+  if (title == "") {
+    throw new Error("Preencha o campo title");
+  }
+  if (body == "") {
+    throw new Error("Preencha o campo body");
+  }
+
+  const post = await prisma.post.findFirst({
+    where: { id: Number(postId) }
+  });
+
+  if (!post) {
+    throw new Error("Post não encontrado com o ID informado.");
+  }
+
+  const updated_post = await prisma.post.update({
+    where: { id: post.id },
+    data: {
+      title,
+      body
+    }
+  });  
+
+  res.json(updated_post);
+}
