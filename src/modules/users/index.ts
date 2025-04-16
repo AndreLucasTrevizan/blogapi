@@ -102,7 +102,10 @@ export const userSignIn = async (
     id: userByEmail.id,
   }, String(process.env.API_SECRET));
 
-  res.json({ token });
+  res.json({ 
+    id: userByEmail.id,
+    token
+  });
 }
 
 export const getUserDetails = async (
