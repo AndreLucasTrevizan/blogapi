@@ -12,3 +12,4 @@ export interface IPosts {
 }
 export declare const createPost: (req: Request, res: Response) => Promise<void>;
 export declare const listPosts: (req: Request, res: Response) => Promise<void>;
+export declare const editPost: (req: Request, res: Response) => Promise<void>;

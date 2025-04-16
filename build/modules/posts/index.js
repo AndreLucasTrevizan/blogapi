@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listPosts = exports.createPost = void 0;
+exports.editPost = exports.listPosts = exports.createPost = void 0;
 const prisma_1 = require("../../prisma");
 const selectOptions = {
     id: true,
@@ -100,3 +100,30 @@ const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({ posts, pages: amountOfPage, limit: postsPerPage }).end();
 });
 exports.listPosts = listPosts;
+const editPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { postId, title, body } = req.body;
+    if (postId == "") {
+        throw new Error("Preencha o campo postId");
+    }
+    if (title == "") {
+        throw new Error("Preencha o campo title");
+    }
+    if (body == "") {
+        throw new Error("Preencha o campo body");
+    }
+    const post = yield prisma_1.prisma.post.findFirst({
+        where: { id: Number(postId) }
+    });
+    if (!post) {
+        throw new Error("Post não encontrado com o ID informado.");
+    }
+    const updated_post = yield prisma_1.prisma.post.update({
+        where: { id: post.id },
+        data: {
+            title,
+            body
+        }
+    });
+    res.json(updated_post);
+});
+exports.editPost = editPost;

@@ -10,3 +10,6 @@ router
     .route('/posts')
     .get(auth_1.authMiddleware, _1.listPosts)
     .post(auth_1.authMiddleware, _1.createPost);
+router
+    .route('/posts/edit')
+    .put(auth_1.authMiddleware, _1.editPost);
